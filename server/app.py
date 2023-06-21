@@ -22,16 +22,15 @@ def animal_by_id(id):
     animal = Animal.query.filter(Animal.id == id).first()
     
     if animal:
-        response_body = f'''
-            <ul>
-                <li>ID: {animal.id}</li>
-                <li>Name: {animal.name}</li>
-                <li>Species: {animal.species}</li>
-                <li>Zookeeper: {animal.zookeeper.name}</li>
-                <li>Enclosure: {animal.enclosure.environment}</li>
-            </ul>
+        response_body = f''
+
+        response_body += f'<ul>ID: {animal.id}</ul>'
+        response_body += f'<ul>Name: {animal.name}</ul>'
+        response_body += f'<ul>Species: {animal.species}</ul>'
+        response_body += f'<ul>Zookeeper: {animal.zookeeper.name}</ul>'
+        response_body += f'<ul>Enclosure: {animal.enclosure.environment}</ul>'
+
     
-        '''
         response = make_response(response_body, 200)
     else:
         response_body = '<h1>404 Animal not found</h1>'
@@ -42,17 +41,19 @@ def animal_by_id(id):
 
 @app.route('/zookeeper/<int:id>')
 def zookeeper_by_id(id):
-    zookeeper = Zookeeper.query.get(id)
+    zookeeper = Zookeeper.query.filter(Zookeeper.id == id).first()
     if zookeeper:
-        response_body = f'''
-           <ul>
-                <li>ID: {zookeeper.id}</li>
-                <li>Birthday: {zookeeper.birthday}</li>
-                <li>Animals:</li>
-            '''
+        response_body = f''
+
+        response_body += f'ID: {zookeeper.id}</ul>'
+        response_body += f'<ul>Name: {zookeeper.name}</ul>'
+        response_body += f'<ul>Birthday: {zookeeper.birthday}</ul>'
+        response_body += f'<ul>Animals:</ul>'
+            
         response_body += '<ul>'
+
         for animal in zookeeper.animals:
-            response_body += f'<li>{animal.name} - {animal.species}</li>'
+            response_body += f'<ul>{animal.name} - {animal.species}</ul>'
         response_body += '</ul>'
         response = make_response(response_body, 200)
     else:
@@ -63,15 +64,15 @@ def zookeeper_by_id(id):
 
 @app.route('/enclosure/<int:id>')
 def enclosure_by_id(id):
-    enclosure = Enclosure.query.get(id)
+    enclosure = Enclosure.query.filter(Enclosure.id == id).first()
     if enclosure:
-        response_body = f'''
-            <ul>
-                <li>ID: {enclosure.id}</li>
-                <li>Environment: {enclosure.environment}</li>
-                <li>Open to Visitors: {enclosure.open_to_visitors}</li>
-                <li>Animals:</li>
-            '''
+        response_body = f''
+
+        response_body += f'<ul>ID: {enclosure.id}</ul>'
+        response_body += f'<ul>Environment: {enclosure.environment}</ul>'
+        response_body += f'<ul>Open to Visitors: {enclosure.open_to_visitors}</ul>'
+        response_body += f'<ul>Animals:</ul>'
+            
         response_body += '<ul>'
         for animal in enclosure.animals:
             response_body += f'<li>{animal.name} - {animal.species}</li>'
