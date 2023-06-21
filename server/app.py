@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from models import db, Zookeeper, Enclosure, Animal
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app1.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
@@ -19,7 +19,7 @@ def home():
 
 @app.route('/animal/<int:id>')
 def animal_by_id(id):
-    animal = Animal.query.get(id)
+    animal = Animal.query.filter(Animal.id == id).first()
     
     if animal:
         response_body = f'''
